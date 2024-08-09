@@ -1,0 +1,30 @@
+[
+    {
+        "id": "1722949240085",
+        "status": "active",
+        "countrycode": "de",
+        "name": "München",
+        "shortDescription": "A short description about München",
+        "map": "Link to map",
+        "coordinates": "",
+        "video": "Link to video",
+        "image": "Link to image",
+        "color": "#4287f5",
+        "travelReport": "",
+        "activities": []
+    },
+    {
+        "id": "1722611250000",
+        "status": "archived",
+        "countrycode": "no",
+        "name": "Lofoten",
+        "shortDescription": "A short description about Lofoten",
+        "map": "Link to map",
+        "coordinates": "",
+        "video": "Link to video",
+        "image": "Link to image",
+        "color": "#e12121",
+        "travelReport": "",
+        "activities": []
+    }
+]
