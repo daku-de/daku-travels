@@ -20,7 +20,7 @@ const DeleteModalButton: React.FC<DeleteButtonProps> = ({ country }) => {
 
     return (
         <React.Fragment>
-            <Button onClick={openModal} variant={'destructive'}>
+            <Button onClick={openModal} variant={'destructive'} className="w-fit">
                 <Eraser className="h-5 w-5" />
             </Button>
             <DeleteModal country={country} isOpen={modalIsOpen} closeModal={closeModal} />

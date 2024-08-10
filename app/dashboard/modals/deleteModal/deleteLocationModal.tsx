@@ -35,10 +35,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, country }
                         {country.countrycode}/{country.name}
                     </div>
                     <div className="text-center line-clamp-2 mb-3">{country.shortDescription}</div>
-                    <div className="flex gap-4 ">
+                    <div className="flex gap-4 items-center">
                         <Status variant={country.status} />
                         <div className="inline-flex items-center gap-1 text-gray-500 text-sm">
-                            <Calendar className="w-4 h-4" />
+                            <Calendar className="w-4 h-4 flex-none" />
                             {new Date(Number(country.id)).toLocaleDateString('en-US', {
                                 day: '2-digit',
                                 month: 'short',
@@ -47,7 +47,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, country }
                         </div>
                     </div>
                 </div>
-                <div className="w-full border-t border-black/30 p-4">
+                <div className="w-full border-t border-foreground/30 p-4">
                     <Button variant={'destructive'} className="h-8 w-full" onClick={onDelete}>
                         I want to delete this location
                     </Button>

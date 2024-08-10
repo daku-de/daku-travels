@@ -4,9 +4,16 @@ export interface Activity {
     tags: string[];
 }
 
+export enum StatusValues {
+    active = 'active',
+    archived = 'archived',
+    draft = 'draft',
+    visited = 'visited',
+}
+
 export interface Country {
     id: string;
-    status: 'active' | 'archived' | 'draft' | 'visited';
+    status: StatusValues;
     countrycode: string;
     name: string;
     shortDescription: string;

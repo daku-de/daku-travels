@@ -28,10 +28,10 @@ export function CountriesTable({
                                 <span className="sr-only">Image</span>
                             </TableHead>
                             <TableHead>Name</TableHead>
-                            <TableHead>Color</TableHead>
+                            <TableHead className="hidden min-[900px]:table-cell">Color</TableHead>
                             <TableHead className="hidden md:table-cell">Short Description</TableHead>
-                            <TableHead className="hidden md:table-cell">Status</TableHead>
-                            <TableHead className="hidden md:table-cell">Created at</TableHead>
+                            <TableHead className="hidden min-[370px]:table-cell">Status</TableHead>
+                            <TableHead className="hidden min-[900px]:table-cell">Created at</TableHead>
                             <TableHead>
                                 <span className="sr-only">Actions</span>
                             </TableHead>

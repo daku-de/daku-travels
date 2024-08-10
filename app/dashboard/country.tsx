@@ -12,14 +12,14 @@ export function CountryEntry({ country }: { country: Country }) {
             <TableCell className="hidden sm:table-cell">
                 <Image
                     alt={`Flag of ${country.countrycode}`}
-                    className="aspect-square rounded-xl object-cover"
+                    className="aspect-square rounded-xl object-cover flex-none"
                     height="48"
                     src={`https://flagcdn.com/${country.countrycode}.svg`}
                     width="48"
                 />
             </TableCell>
             <TableCell className="font-medium">{country.name}</TableCell>
-            <TableCell>
+            <TableCell className="hidden min-[900px]:table-cell">
                 <Badge
                     variant="outline"
                     className="capitalize h-6 w-10 shadow-md"
@@ -27,10 +27,10 @@ export function CountryEntry({ country }: { country: Country }) {
                 />
             </TableCell>
             <TableCell className="hidden md:table-cell">{`${country.shortDescription}`}</TableCell>
-            <TableCell className="hidden md:table-cell">
-                <Status variant={country.status} />
+            <TableCell className="hidden min-[370px]:table-cell">
+                <Status variant={country.status} className="min-[460px]:text-base text-[0.6rem]" />
             </TableCell>
-            <TableCell className="hidden md:table-cell">
+            <TableCell className="hidden min-[900px]:table-cell">
                 {new Date(Number(country.id)).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short',
@@ -38,7 +38,7 @@ export function CountryEntry({ country }: { country: Country }) {
                 })}
             </TableCell>
             <TableCell>
-                <div className="flex flex-row gap-2">
+                <div className="flex sm:flex-row gap-2 flex-col">
                     <EditModalButton country={country} />
                     <DeleteModalButton country={country} />
                 </div>

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Archive, MapPin, MapPinCheck, PencilLine } from 'lucide-react';
 
 const statusVariants = cva(
-    'inline-flex items-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors w-[7.5em] select-none px-1',
+    'inline-flex items-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors w-[8em] select-none px-1 h-fit',
     {
         variants: {
             variant: {
@@ -30,12 +30,12 @@ export interface StatusProps extends React.HTMLAttributes<HTMLElement> {
     variant: Country['status'];
 }
 
-const Status = ({ variant, ...props }: StatusProps) => {
+const Status = ({ className, variant, ...props }: StatusProps) => {
     const Icon = variantIcons[variant];
     return (
-        <div className={cn(statusVariants({ variant }))} {...props}>
+        <div className={cn(statusVariants({ variant }), className)} {...props}>
             <Icon className="mr-2 h-[1em] min-w-[1em] w-[1em]" />
-            <div className="overflow-x-hidden flex-grow text-center pr-[1em]">{variant?.toUpperCase()}</div>
+            <div className="overflow-x-hidden flex-grow text-center pr-[0.5em]">{variant?.toUpperCase()}</div>
         </div>
     );
 };

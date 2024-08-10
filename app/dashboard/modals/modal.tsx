@@ -13,7 +13,11 @@ const customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
     },
-    overlay: { zIndex: 1000 },
+    overlay: {
+        zIndex: 1000,
+        backgroundColor: 'hsla(var(--muted) / 70%)',
+        backdropFilter: 'blur(5px)',
+    },
 };
 
 Modal.setAppElement('#root');
@@ -35,7 +39,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, heade
             style={customStyles}
             className={'flex flex-col z-50 absolute bg-card border rounded-xl w-[480px] max-w-[85%]'}
         >
-            <div className="w-full border-b border-black/30 flex justify-between items-center p-2 px-3">
+            <div className="w-full border-b border-foreground/30 flex justify-between items-center p-2 px-3">
                 <div className="font-semibold">{header}</div>
                 <Button variant="ghost" onClick={onRequestClose} className="p-2 h-auto">
                     <X className="w-4 h-4" />
