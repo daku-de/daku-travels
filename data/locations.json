@@ -1,7 +1,10 @@
 [{
         "id": "1722949240085",
         "status": "active",
-        "countrycode": "de",
+        "country": {
+            "name": "Germany",
+            "code": "DE"
+        },
         "name": "München",
         "shortDescription": "A short description about München",
         "map": "Link to map",
@@ -15,7 +18,10 @@
     {
         "id": "1722611250000",
         "status": "archived",
-        "countrycode": "no",
+        "country": {
+            "name": "Norway",
+            "code": "no"
+        },
         "name": "Lofoten",
         "shortDescription": "A short description about Lofoten",
         "map": "Link to map",
@@ -28,7 +34,10 @@
     }, {
         "id": "1722611250000",
         "status": "draft",
-        "countrycode": "nz",
+        "country": {
+            "name": "New Zealand",
+            "code": "NZ"
+        },
         "name": "New Zealand",
         "shortDescription": "A short description about New Zealand",
         "map": "Link to map",

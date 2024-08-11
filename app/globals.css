@@ -94,3 +94,12 @@ input[type='search']::-moz-search-cancel-button {
 input[type='search']::-ms-clear {
     display: none;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

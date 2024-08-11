@@ -11,7 +11,7 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { loadCountries } from '@/actions/actions';
+import { loadLocations } from '@/actions/actions';
 
 interface BreadcrumbItemValue {
     href: string;
@@ -53,8 +53,8 @@ export function DashboardBreadcrumb() {
 
             if (matchedKey.includes('[id]')) {
                 const id = pathSegments[pathSegments.length - 1];
-                const countries = await loadCountries();
-                const name = countries.find((c) => c.id === id)?.name || 'Unknown';
+                const locations = await loadLocations();
+                const name = locations.find((c) => c.id === id)?.name || 'Unknown';
 
                 breadcrumbs = breadcrumbs.map((breadcrumb) => ({
                     ...breadcrumb,

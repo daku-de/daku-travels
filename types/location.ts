@@ -12,9 +12,14 @@ export enum StatusValues {
 }
 
 export interface Country {
+    name: string;
+    code: string;
+}
+
+export interface Location {
     id: string;
     status: StatusValues;
-    countrycode: string;
+    country: Country;
     name: string;
     shortDescription: string;
     activities: Activity[];

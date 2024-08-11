@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { cva } from 'class-variance-authority';
-import { Country } from '@/types/country';
+import { Location } from '@/types/location';
 
 import { cn } from '@/lib/utils';
 import { Archive, MapPin, MapPinCheck, PencilLine } from 'lucide-react';
@@ -27,7 +27,7 @@ const variantIcons = {
 };
 
 export interface StatusProps extends React.HTMLAttributes<HTMLElement> {
-    variant: Country['status'];
+    variant: Location['status'];
 }
 
 const Status = ({ className, variant, ...props }: StatusProps) => {

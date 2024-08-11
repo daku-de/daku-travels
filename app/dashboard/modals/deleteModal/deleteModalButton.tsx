@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Country } from '@/types/country';
+import { Location } from '@/types/location';
 import DeleteModal from './deleteLocationModal';
 import { Button } from '@/components/ui/button';
 import { Eraser } from 'lucide-react';
 
 interface DeleteButtonProps {
-    country: Country;
+    location: Location;
 }
 
-const DeleteModalButton: React.FC<DeleteButtonProps> = ({ country }) => {
+const DeleteModalButton: React.FC<DeleteButtonProps> = ({ location }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
@@ -23,7 +23,7 @@ const DeleteModalButton: React.FC<DeleteButtonProps> = ({ country }) => {
             <Button onClick={openModal} variant={'destructive'} className="w-fit">
                 <Eraser className="h-5 w-5" />
             </Button>
-            <DeleteModal country={country} isOpen={modalIsOpen} closeModal={closeModal} />
+            <DeleteModal location={location} isOpen={modalIsOpen} closeModal={closeModal} />
         </React.Fragment>
     );
 };

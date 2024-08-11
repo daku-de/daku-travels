@@ -2,27 +2,27 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { File, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { CountriesTable } from './countries-table';
-import { loadCountries } from '@/actions/actions';
+import { LocationsTable } from './locations-table';
+import { loadLocations } from '@/actions/actions';
 import { useEffect, useState } from 'react';
-import { Country } from '@/types/country';
+import { Location } from '@/types/location';
 
 export default function DashboardHome() {
-    const [countries, setCountries] = useState<Country[]>([]);
+    const [locations, setLocations] = useState<Location[]>([]);
     useEffect(() => {
-        const fetchCountries = async () => {
-            setCountries(await loadCountries());
+        const fetchLocations = async () => {
+            setLocations(await loadLocations());
         };
-        fetchCountries();
+        fetchLocations();
     }, []);
 
     const handleExport = () => {
-        const countryData = JSON.stringify(countries, null, 2);
-        const blob = new Blob([countryData], { type: 'application/json' });
+        const locationData = JSON.stringify(locations, null, 2);
+        const blob = new Blob([locationData], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'countries.json';
+        link.download = 'locations.json';
         link.click();
         URL.revokeObjectURL(url);
     };
@@ -55,29 +55,29 @@ export default function DashboardHome() {
                 </div>
             </div>
             <TabsContent value="all">
-                <CountriesTable
-                    countries={countries}
+                <LocationsTable
+                    locations={locations}
                     title="All Locations"
                     description="Manage and update all locations."
                 />
             </TabsContent>
             <TabsContent value="active">
-                <CountriesTable
-                    countries={countries.filter((c) => c.status === 'active')}
+                <LocationsTable
+                    locations={locations.filter((c) => c.status === 'active')}
                     title="Active Locations"
                     description="These locations are currently visible to users on the front page."
                 />
             </TabsContent>
             <TabsContent value="draft">
-                <CountriesTable
-                    countries={countries.filter((c) => c.status === 'draft')}
+                <LocationsTable
+                    locations={locations.filter((c) => c.status === 'draft')}
                     title="Location Drafts"
                     description="Locations saved as drafts. These locations can be incomplete and are not visible."
                 />
             </TabsContent>
             <TabsContent value="archived">
-                <CountriesTable
-                    countries={countries.filter((c) => c.status === 'archived')}
+                <LocationsTable
+                    locations={locations.filter((c) => c.status === 'archived')}
                     title="Archived Locations"
                     description="These locations are archived and no longer active."
                 />

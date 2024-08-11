@@ -2,15 +2,15 @@
 
 import { TableHead, TableRow, TableHeader, TableBody, Table } from '@/components/ui/table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CountryEntry } from './country';
-import { Country } from '@/types/country';
+import { LocationEntry } from './location';
+import { Location } from '@/types/location';
 
-export function CountriesTable({
-    countries,
+export function LocationsTable({
+    locations,
     title,
     description,
 }: {
-    countries: Country[];
+    locations: Location[];
     title: string;
     description: string;
 }) {
@@ -38,8 +38,8 @@ export function CountriesTable({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {countries.map((country) => (
-                            <CountryEntry key={country.id} country={country} />
+                        {locations.map((location) => (
+                            <LocationEntry key={location.id} location={location} />
                         ))}
                     </TableBody>
                 </Table>
