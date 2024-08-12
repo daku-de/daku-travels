@@ -1,18 +1,18 @@
-import { loadCountries } from '@/actions/actions';
+'use client';
+import { loadLocations } from '@/actions/actions';
 import { auth } from '@/auth';
+import StatusDropDown from './statusDropdown';
+import CountryDropdown from './countryDropdown';
 
-export default async function EditPage() {
-    const session = await auth();
-    if (session?.user?.name !== process.env.ADMIN_USER) {
-        return <div>NOT ADMIN USER!</div>;
-    }
-    const countries = await loadCountries();
-
+export default function EditPage() {
     return (
         <div>
-            {countries.map((c) => {
-                return <div key={c.id}>{c.name}</div>;
-            })}
+            <StatusDropDown onStatusChange={(s) => console.log(s)} />
+            <CountryDropdown
+                onCountryChange={(c) => {
+                    console.log(c);
+                }}
+            />
         </div>
     );
 }

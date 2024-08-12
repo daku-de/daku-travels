@@ -23,5 +23,15 @@
         "react": {
             "version": "detect"
         }
-    }
+    },
+    "overrides": [
+        {
+            "files": ["*.js"],
+            "parser": "espree",
+            "rules": {
+                "prettier/prettier": "warn",
+                "no-unused-vars": "warn"
+            }
+        }
+    ]
 }

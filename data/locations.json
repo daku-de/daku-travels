@@ -3,7 +3,8 @@
         "status": "active",
         "country": {
             "name": "Germany",
-            "code": "DE"
+            "code": "DE",
+            "ccn3Code": "276"
         },
         "name": "München",
         "shortDescription": "A short description about München",
@@ -20,7 +21,8 @@
         "status": "archived",
         "country": {
             "name": "Norway",
-            "code": "no"
+            "code": "no",
+            "ccn3Code": "578"
         },
         "name": "Lofoten",
         "shortDescription": "A short description about Lofoten",
@@ -36,7 +38,8 @@
         "status": "draft",
         "country": {
             "name": "New Zealand",
-            "code": "NZ"
+            "code": "NZ",
+            "ccn3Code": "554"
         },
         "name": "New Zealand",
         "shortDescription": "A short description about New Zealand",

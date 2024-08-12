@@ -20,7 +20,7 @@ export default function StatusDropDown({ onStatusChange }: { onStatusChange: (st
 
     const handleStatusChange = (s: StatusValues) => {
         setStatus(s);
-        // onStatusChange(s);
+        onStatusChange(s);
     };
     return (
         <DropdownMenu>

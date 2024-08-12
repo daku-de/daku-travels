@@ -18,17 +18,24 @@ interface CountryResponse {
         official: string;
     };
     cca2: string;
+    ccn3: string;
 }
 
 export default function CountryDropdown({ onCountryChange }: { onCountryChange: (c: Country) => void }) {
+    const defaultCountry = { name: 'Germany', code: 'DE', ccn3Code: '276' };
+
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [countryList, setCountryList] = useState<Country[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState<Country>({ name: 'Germany', code: 'DE' });
+    const [selectedCountry, setSelectedCountry] = useState<Country>(defaultCountry);
     const searchInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        onCountryChange(defaultCountry);
+    }, []);
 
     const fetchCountries = async () => {
         try {
-            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2');
+            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,ccn3');
             if (!response.ok) {
                 throw new Error('Restcountries API response is not ok');
             }
@@ -37,6 +44,7 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
             const countryList: Country[] = countries.map((country) => ({
                 name: country.name.common,
                 code: country.cca2,
+                ccn3Code: country.ccn3,
             }));
 
             countryList.sort((a, b) => (a.name < b.name ? -1 : 1));
@@ -47,13 +55,13 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
         }
     };
 
-    fetchCountries();
+    useEffect(() => {
+        fetchCountries();
+    }, []);
 
     const handleCountryChange = (country: Country) => {
         setSelectedCountry(country);
-        if (onCountryChange) {
-            onCountryChange(country);
-        }
+        onCountryChange(country);
     };
 
     const filteredCountries = countryList.filter((country) =>
