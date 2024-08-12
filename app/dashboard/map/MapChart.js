@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { csv } from 'd3-fetch';
 import { scaleLinear } from 'd3-scale';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule, ZoomableGroup, Marker } from 'react-simple-maps';
+import Image from 'next/image';
 
-const geoUrl = '/features.json';
+const geoUrl = '/resources/features.json';
 
 const colorScale = scaleLinear().domain([0.29, 0.68]).range(['#ffedea', '#ff5233']);
 
@@ -13,6 +14,42 @@ const MapChart = () => {
     const [hoveredCountry, setHoveredCountry] = useState('');
     const [displayTooltip, setDisplayTooltip] = useState(false);
     const [scaleFactor, setScaleFactor] = useState(1);
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [correctGuesses, setCorrectGuesses] = useState([]);
+
+    const [answerResult, setAnswerResult] = useState(null);
+    const [countryList, setCountryList] = useState([]);
+
+    const fetchCountries = async () => {
+        try {
+            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,ccn3');
+            if (!response.ok) {
+                throw new Error('Restcountries API response is not ok');
+            }
+            const countries = await response.json();
+
+            const countrylist = countries.map((country) => ({
+                name: country.name.common,
+                code: country.cca2,
+                ccn3Code: country.ccn3,
+            }));
+
+            setCountryList(countrylist);
+        } catch (error) {
+            console.error('Error fetching country list:', error);
+        }
+    };
+
+    useEffect(() => {
+        setSelectedCountry(countryList[[Math.floor(Math.random() * countryList.length)]]);
+    }, [countryList]);
+
+    useEffect(() => {
+        const fetchAndSelect = async () => {
+            await fetchCountries();
+        };
+        fetchAndSelect();
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (event) => {
@@ -46,11 +83,34 @@ const MapChart = () => {
         setDisplayTooltip(false);
     };
 
+    const handleCountryClick = (geo) => {
+        if (correctGuesses.find((x) => x.ccn3Code === geo.id)) return;
+        if (selectedCountry.ccn3Code === geo.id) {
+            setAnswerResult(true);
+            setCorrectGuesses(correctGuesses.concat(selectedCountry));
+            setCountryList(countryList.filter((x) => !correctGuesses.includes(x)));
+        } else {
+            setAnswerResult(false);
+        }
+    };
+
     return (
         <div>
             <div
+                className={`w-8 h-8 mb-2 ${answerResult ? 'bg-green-500' : answerResult === false ? 'bg-red-500' : 'bg-gray-400'}`}
+            ></div>
+            <Image src={`https://flagcdn.com/${selectedCountry?.code?.toLowerCase()}.svg`} width={64} height={120} />
+            <button
+                onClick={() => {
+                    setSelectedCountry(countryList[[Math.floor(Math.random() * countryList.length)]]);
+                }}
+                className="p-2 bg-gray-700 rounded-lg mt-2"
+            >
+                Skip!
+            </button>
+            <div
                 style={tooltipStyle}
-                className={`fixed p-4 text-white z-50 pointer-events-none rounded-xl bg-black ${displayTooltip ? 'block' : 'hidden'}`}
+                className={`fixed p-4 text-white z-50 pointer-events-none rounded-xl bg-black ${displayTooltip ? 'block' : 'hidden'} hidden`}
             >
                 {hoveredCountry}
             </div>
@@ -59,6 +119,7 @@ const MapChart = () => {
                     rotate: [-10, 0, 0],
                     scale: 147,
                 }}
+                className="w-[800px]"
             >
                 <ZoomableGroup
                     translateExtent={[
@@ -90,10 +151,8 @@ const MapChart = () => {
                                             style={{
                                                 pressed: { fill: '#02A', outline: 'none' },
                                             }}
-                                            className={`fill-primary hover:fill-blue-700 outline-none stroke-border stroke-[0.1] `}
-                                            onClick={() => {
-                                                console.log(geo.properties.name);
-                                            }}
+                                            className={` outline-none stroke-border stroke-[0.1] ${correctGuesses.find((x) => x.ccn3Code === geo.id) ? 'fill-green-400' : 'fill-primary cursor-pointer hover:fill-blue-700'}`}
+                                            onClick={() => handleCountryClick(geo)}
                                         />
                                     );
                                 })
