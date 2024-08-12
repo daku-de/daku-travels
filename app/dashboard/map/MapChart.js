@@ -9,7 +9,6 @@ const geoUrl = '/resources/features.json';
 const colorScale = scaleLinear().domain([0.29, 0.68]).range(['#ffedea', '#ff5233']);
 
 const MapChart = () => {
-    const [data, setData] = useState([]);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hoveredCountry, setHoveredCountry] = useState('');
     const [displayTooltip, setDisplayTooltip] = useState(false);
@@ -67,12 +66,6 @@ const MapChart = () => {
         top: mousePos.y + 15,
         left: mousePos.x + 15,
     };
-
-    useEffect(() => {
-        csv(`/vulnerability.csv`).then((data) => {
-            setData(data);
-        });
-    }, []);
 
     const handleMouseOver = (geo) => {
         setHoveredCountry(geo.properties.name);
@@ -137,11 +130,10 @@ const MapChart = () => {
                 >
                     <Graticule stroke="hsl(var(--muted-foreground))" strokeWidth={0.5} />
                     <Sphere stroke="hsl(var(--foreground))" strokeWidth={2} />
-                    {data.length > 0 && (
+                    {
                         <Geographies geography={geoUrl}>
                             {({ geographies }) =>
                                 geographies.map((geo) => {
-                                    const d = data.find((s) => s.ISO3 === geo.id);
                                     return (
                                         <Geography
                                             key={geo.rsmKey}
@@ -158,7 +150,7 @@ const MapChart = () => {
                                 })
                             }
                         </Geographies>
-                    )}
+                    }
                     {/* <Marker coordinates={[-73.968285, 40.785091]}>
                         <circle
                             r={4 / scaleFactor}
