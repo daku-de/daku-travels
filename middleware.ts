@@ -5,7 +5,7 @@ export const config = {
 };
 
 export default auth((req) => {
-    if ((!req.auth || req.auth?.user?.name !== process.env.ADMIN_USER) && req.nextUrl.pathname !== '/login') {
+    if (!req.auth && req.nextUrl.pathname !== '/login') {
         const newUrl = new URL('/login', req.nextUrl.origin);
         return Response.redirect(newUrl);
     }
