@@ -63,21 +63,21 @@ export default function DashboardHome() {
             </TabsContent>
             <TabsContent value="active">
                 <LocationsTable
-                    locations={locations.filter((c) => c.status === 'active')}
+                    locations={locations.filter((l) => l.status === 'active')}
                     title="Active Locations"
                     description="These locations are currently visible to users on the front page."
                 />
             </TabsContent>
             <TabsContent value="draft">
                 <LocationsTable
-                    locations={locations.filter((c) => c.status === 'draft')}
+                    locations={locations.filter((l) => l.status === 'draft')}
                     title="Location Drafts"
                     description="Locations saved as drafts. These locations can be incomplete and are not visible."
                 />
             </TabsContent>
             <TabsContent value="archived">
                 <LocationsTable
-                    locations={locations.filter((c) => c.status === 'archived')}
+                    locations={locations.filter((l) => l.status === 'archived')}
                     title="Archived Locations"
                     description="These locations are archived and no longer active."
                 />

@@ -3,10 +3,11 @@ import { csv } from 'd3-fetch';
 import { scaleLinear } from 'd3-scale';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule, ZoomableGroup, Marker } from 'react-simple-maps';
 import Image from 'next/image';
+import { countryCodeEmoji } from 'country-code-emoji';
 
-const geoUrl = '/resources/features.json';
+const geoUrl = '/resources/world-map-countries.json';
 
-const colorScale = scaleLinear().domain([0.29, 0.68]).range(['#ffedea', '#ff5233']);
+const colorScale = scaleLinear().domain([0, 10]).range([1, 5]);
 
 const MapChart = () => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -15,22 +16,23 @@ const MapChart = () => {
     const [scaleFactor, setScaleFactor] = useState(1);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [correctGuesses, setCorrectGuesses] = useState([]);
+    const [flagError, setFlagError] = useState(false);
 
     const [answerResult, setAnswerResult] = useState(null);
     const [countryList, setCountryList] = useState([]);
 
     const fetchCountries = async () => {
         try {
-            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,ccn3');
+            const response = await fetch('/resources/countries.json');
             if (!response.ok) {
                 throw new Error('Restcountries API response is not ok');
             }
             const countries = await response.json();
 
             const countrylist = countries.map((country) => ({
-                name: country.name.common,
-                code: country.cca2,
-                ccn3Code: country.ccn3,
+                name: country.name,
+                code: country.iso_a2_eh !== '-99' ? country.iso_a2_eh : country.adm0_a3,
+                id: country.adm0_a3,
             }));
 
             setCountryList(countrylist);
@@ -77,8 +79,8 @@ const MapChart = () => {
     };
 
     const handleCountryClick = (geo) => {
-        if (correctGuesses.find((x) => x.ccn3Code === geo.id)) return;
-        if (selectedCountry.ccn3Code === geo.id) {
+        if (correctGuesses.find((x) => x.id === geo.properties.adm0_a3)) return;
+        if (selectedCountry.id === geo.properties.adm0_a3) {
             setAnswerResult(true);
             setCorrectGuesses(correctGuesses.concat(selectedCountry));
             setCountryList(countryList.filter((x) => !correctGuesses.includes(x)));
@@ -92,10 +94,38 @@ const MapChart = () => {
             <div
                 className={`w-8 h-8 mb-2 ${answerResult ? 'bg-green-500' : answerResult === false ? 'bg-red-500' : 'bg-gray-400'}`}
             ></div>
-            <Image src={`https://flagcdn.com/${selectedCountry?.code?.toLowerCase()}.svg`} width={64} height={120} />
+            <div>{correctGuesses.length + ' / ' + countryList.length + ' countries found'}</div>
+            <div>
+                Found:{' '}
+                {correctGuesses
+                    .map((guess) => {
+                        {
+                            try {
+                                return countryCodeEmoji(guess.code);
+                            } catch {
+                                return '';
+                            }
+                        }
+                    })
+                    .join(' ')}
+            </div>
+            <Image
+                width={64}
+                height={120}
+                src={
+                    !flagError
+                        ? `https://flagcdn.com/${selectedCountry?.code.toLowerCase()}.svg`
+                        : '/resources/flagFallback.svg'
+                }
+                onError={() => {
+                    setFlagError(true);
+                }}
+                className="h-24 w-auto"
+            />
             <button
                 onClick={() => {
                     setSelectedCountry(countryList[[Math.floor(Math.random() * countryList.length)]]);
+                    setFlagError(false);
                 }}
                 className="p-2 bg-gray-700 rounded-lg mt-2"
             >
@@ -103,7 +133,7 @@ const MapChart = () => {
             </button>
             <div
                 style={tooltipStyle}
-                className={`fixed p-4 text-white z-50 pointer-events-none rounded-xl bg-black ${displayTooltip ? 'block' : 'hidden'} hidden`}
+                className={`fixed p-4 text-white z-50 pointer-events-none rounded-xl bg-black ${displayTooltip ? 'block' : 'hidden'}`}
             >
                 {hoveredCountry}
             </div>
@@ -143,7 +173,7 @@ const MapChart = () => {
                                             style={{
                                                 pressed: { fill: '#02A', outline: 'none' },
                                             }}
-                                            className={` outline-none stroke-border stroke-[0.1] ${correctGuesses.find((x) => x.ccn3Code === geo.id) ? 'fill-green-400' : 'fill-primary cursor-pointer hover:fill-blue-700'}`}
+                                            className={` outline-none stroke-border stroke-[0.1] ${correctGuesses.find((x) => x.id === geo.properties.adm0_a3) ? 'fill-green-400' : 'fill-primary cursor-pointer hover:fill-blue-700'}`}
                                             onClick={() => handleCountryClick(geo)}
                                         />
                                     );

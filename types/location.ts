@@ -14,7 +14,7 @@ export enum StatusValues {
 export interface Country {
     name: string;
     code: string;
-    ccn3Code: string;
+    id: string;
 }
 
 export interface Location {

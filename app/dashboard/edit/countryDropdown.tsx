@@ -13,21 +13,19 @@ import { ChevronDown } from 'lucide-react';
 import { Country } from '@/types/location';
 
 interface CountryResponse {
-    name: {
-        common: string;
-        official: string;
-    };
-    cca2: string;
-    ccn3: string;
+    name: string;
+    adm0_a3: string;
+    iso_a2_eh: string;
 }
 
 export default function CountryDropdown({ onCountryChange }: { onCountryChange: (c: Country) => void }) {
-    const defaultCountry = { name: 'Germany', code: 'DE', ccn3Code: '276' };
+    const defaultCountry: Country = { name: 'Germany', code: 'DE', id: 'DEU' };
 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [countryList, setCountryList] = useState<Country[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<Country>(defaultCountry);
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const [flagError, setFlagError] = useState<boolean>(false);
 
     useEffect(() => {
         onCountryChange(defaultCountry);
@@ -35,16 +33,16 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
 
     const fetchCountries = async () => {
         try {
-            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,ccn3');
+            const response = await fetch('/resources/countries.json');
             if (!response.ok) {
                 throw new Error('Restcountries API response is not ok');
             }
             const countries: CountryResponse[] = await response.json();
 
             const countryList: Country[] = countries.map((country) => ({
-                name: country.name.common,
-                code: country.cca2,
-                ccn3Code: country.ccn3,
+                name: country.name,
+                code: country.iso_a2_eh !== '-99' ? country.iso_a2_eh : country.adm0_a3,
+                id: country.adm0_a3,
             }));
 
             countryList.sort((a, b) => (a.name < b.name ? -1 : 1));
@@ -61,6 +59,7 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
 
     const handleCountryChange = (country: Country) => {
         setSelectedCountry(country);
+        setFlagError(false);
         onCountryChange(country);
     };
 
@@ -76,6 +75,14 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
 
     const handleDropdownOpen = () => {
         setSearchTerm('');
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            if (filteredCountries.length > 0) {
+                handleCountryChange(filteredCountries[0]);
+            }
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +114,7 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
                         ref={searchInputRef}
                         value={searchTerm}
                         onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
                         className="w-0 h-0 absolute"
                         autoFocus
                         onBlur={handleInputBlur}
@@ -114,7 +122,7 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
                     {filteredCountries.length > 0 ? (
                         filteredCountries.map((country) => (
                             <DropdownMenuItem
-                                key={country.code}
+                                key={country.id}
                                 className="hover:cursor-pointer whitespace-nowrap text-ellipsis overflow-hidden block hover:bg-accent hover:text-accent-foreground"
                                 onClick={() => handleCountryChange(country)}
                             >
@@ -130,8 +138,15 @@ export default function CountryDropdown({ onCountryChange }: { onCountryChange: 
                 alt={`Flag of ${selectedCountry.name}`}
                 className="rounded-xl object-cover flex-none h-12 w-16"
                 height="48"
-                src={`https://flagcdn.com/${selectedCountry.code.toLowerCase()}.svg`}
+                src={
+                    !flagError
+                        ? `https://flagcdn.com/${selectedCountry.code.toLowerCase()}.svg`
+                        : '/resources/flagFallback.svg'
+                }
                 width="64"
+                onError={() => {
+                    setFlagError(true);
+                }}
             />
         </div>
     );

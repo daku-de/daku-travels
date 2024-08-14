@@ -54,7 +54,7 @@ export function DashboardBreadcrumb() {
             if (matchedKey.includes('[id]')) {
                 const id = pathSegments[pathSegments.length - 1];
                 const locations = await loadLocations();
-                const name = locations.find((c) => c.id === id)?.name || 'Unknown';
+                const name = locations.find((l) => l.id === id)?.name || 'Unknown';
 
                 breadcrumbs = breadcrumbs.map((breadcrumb) => ({
                     ...breadcrumb,

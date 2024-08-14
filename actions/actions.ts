@@ -19,7 +19,7 @@ export async function addLocation(location: Location) {
 
 export async function editLocation(location: Location) {
     const locations = await loadLocations();
-    const oldLocation = locations.find((c) => c.id == location.id);
+    const oldLocation = locations.find((l) => l.id == location.id);
     if (!oldLocation) return false;
     locations[locations.indexOf(oldLocation)] = location;
     storeLocations(locations);
@@ -28,7 +28,7 @@ export async function editLocation(location: Location) {
 
 export async function deleteLocation(location: Location) {
     const locations = await loadLocations();
-    storeLocations(locations.filter((c) => c.id !== location.id));
+    storeLocations(locations.filter((l) => l.id !== location.id));
     return true;
 }
 
