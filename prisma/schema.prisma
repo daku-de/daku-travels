@@ -1,0 +1,39 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Location {
+  id               String   @id @default(uuid())
+  status           String
+  name             String
+  shortDescription String
+  map              String
+  video            String
+  image            String
+  color            String
+  country          Json
+  activities       Json  
+}
+
+model Travel {
+  id          String   @id @default(uuid())
+  destination Json
+  year        Int
+  month       Int
+  duration    Int
+}
+
+model ResidencePeriod {
+  id          String   @id @default(uuid())
+  city        String
+  country     Json
+  startYear   Int
+  startMonth  Int
+  endYear     Int?
+  endMonth    Int?
+}
