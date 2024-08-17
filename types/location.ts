@@ -11,6 +11,24 @@ export enum StatusValues {
     visited = 'visited',
 }
 
+export interface Travel {
+    id: string;
+    destination: Country;
+    year: number;
+    month: number;
+    duration: number;
+}
+
+export interface ResidencePeriod {
+    id: string;
+    city: string;
+    country: Country;
+    startYear: number;
+    startMonth: number;
+    endYear?: number;
+    endMonth?: number;
+}
+
 export interface Country {
     name: string;
     code: string;

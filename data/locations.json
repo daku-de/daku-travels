@@ -17,7 +17,7 @@
         "activities": []
     },
     {
-        "id": "1722611250000",
+        "id": "1722611250001",
         "status": "archived",
         "country": {
             "name": "Norway",
@@ -39,7 +39,7 @@
         "country": {
             "name": "New Zealand",
             "code": "NZ",
-            "ccn3Code": "NZL"
+            "id": "NZL"
         },
         "name": "New Zealand",
         "shortDescription": "A short description about New Zealand",

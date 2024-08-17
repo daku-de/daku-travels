@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import useSound from 'use-sound';
 import React from 'react';
 
 export default function ThemeSwitch({ className }: { className?: string }) {
@@ -12,6 +13,17 @@ export default function ThemeSwitch({ className }: { className?: string }) {
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
     const tooltip = `Switch to ${currentTheme === 'light' ? 'Dark Mode' : 'Light Mode'}`;
+
+    const [playSwitch] = useSound('/resources/theme-switch.mp3', { volume: 0.2 });
+
+    const switchTheme = () => {
+        playSwitch();
+        if (currentTheme === 'dark') {
+            setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+    };
 
     useEffect(() => setMounted(true), []);
 
@@ -22,7 +34,7 @@ export default function ThemeSwitch({ className }: { className?: string }) {
             <Tooltip>
                 <TooltipTrigger asChild className={cn('h-6 w-6 cursor-pointer', className)}>
                     <div>
-                        <SunIcon onClick={() => setTheme('light')} className="h-full w-full" />
+                        <SunIcon onClick={switchTheme} className="h-full w-full" />
                         <span className="sr-only">{tooltip}</span>
                     </div>
                 </TooltipTrigger>
@@ -36,7 +48,7 @@ export default function ThemeSwitch({ className }: { className?: string }) {
             <Tooltip>
                 <TooltipTrigger asChild className={cn('h-6 w-6 cursor-pointer', className)}>
                     <div>
-                        <MoonIcon onClick={() => setTheme('dark')} className="h-full w-full" />
+                        <MoonIcon onClick={switchTheme} className="h-full w-full" />
                         <span className="sr-only">{tooltip}</span>
                     </div>
                 </TooltipTrigger>
