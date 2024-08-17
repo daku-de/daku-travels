@@ -29,6 +29,7 @@ export default {
                     foreground: 'hsl(var(--secondary-foreground))',
                 },
                 tertiary: 'hsl(var(--tertiary))',
+                orangey: 'hsl(var(--orangey))',
                 destructive: {
                     DEFAULT: 'hsl(var(--destructive))',
                     foreground: 'hsl(var(--destructive-foreground))',

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Location } from '@/types/location';
-import DeleteModal from './deleteLocationModal';
 import { Button } from '@/components/ui/button';
 import { Eraser } from 'lucide-react';
+import DeleteLocationModal from './deleteLocationModal';
 
 interface DeleteButtonProps {
     location: Location;
@@ -23,7 +23,7 @@ const DeleteModalButton: React.FC<DeleteButtonProps> = ({ location }) => {
             <Button onClick={openModal} variant={'destructive'} className="w-fit">
                 <Eraser className="h-5 w-5" />
             </Button>
-            <DeleteModal location={location} isOpen={modalIsOpen} closeModal={closeModal} />
+            <DeleteLocationModal location={location} isOpen={modalIsOpen} closeModal={closeModal} />
         </React.Fragment>
     );
 };

@@ -1,11 +1,10 @@
 import React from 'react';
-import CustomModal from '../modal';
-import { Button } from '@/components/ui/button';
 import { deleteLocation } from '@/actions/actions';
 import { Location } from '@/types/location';
 import Image from 'next/image';
 import { Status } from '@/components/ui/status';
 import { Calendar } from 'lucide-react';
+import DeleteModal from './deleteModal';
 
 interface DeleteModalProps {
     isOpen: boolean;
@@ -13,19 +12,20 @@ interface DeleteModalProps {
     location: Location;
 }
 
-const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, location }) => {
+const DeleteLocationModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, location }) => {
     const onDelete = () => {
         deleteLocation(location);
-        closeModal();
         window.location.reload();
     };
 
     return (
         <React.Fragment>
-            <CustomModal
+            <DeleteModal
                 isOpen={isOpen}
-                onRequestClose={closeModal}
+                closeModal={closeModal}
                 header={`Delete "${location.country.code.toLowerCase() + '/' + location.name}"`}
+                type={'location'}
+                deleteFunction={onDelete}
             >
                 <div className="max-w-[80%] flex flex-col items-center p-4 mx-auto">
                     <Image
@@ -36,7 +36,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, location 
                         width="32"
                     />
                     <div className="font-bold text-xl">
-                        {location.country.name.toLowerCase().replace(' ', '-')}/{location.name}
+                        {location.country.code.toLowerCase().replace(' ', '-')}/{location.name}
                     </div>
                     <div className="text-center line-clamp-2 mb-3">{location.shortDescription}</div>
                     <div className="flex gap-4 items-center">
@@ -51,14 +51,9 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, location 
                         </div>
                     </div>
                 </div>
-                <div className="w-full border-t border-foreground/30 p-4">
-                    <Button variant={'destructive'} className="h-8 w-full" onClick={onDelete}>
-                        I want to delete this location
-                    </Button>
-                </div>
-            </CustomModal>
+            </DeleteModal>
         </React.Fragment>
     );
 };
 
-export default DeleteModal;
+export default DeleteLocationModal;
