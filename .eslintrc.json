@@ -9,10 +9,10 @@
     },
     "extends": [
         "eslint:recommended",
-        "next",
-        "next/core-web-vitals",
         "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "next",
+        "next/core-web-vitals"
     ],
     "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
@@ -28,6 +28,10 @@
         {
             "files": ["*.js"],
             "parser": "espree",
+            "parserOptions": {
+                "ecmaVersion": 2020,
+                "sourceType": "module"
+            },
             "rules": {
                 "prettier/prettier": "warn",
                 "no-unused-vars": "warn"
