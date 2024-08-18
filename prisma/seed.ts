@@ -3,6 +3,34 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+    await prisma.travel.createMany({
+        data: {
+            id: 'TRAVEL1',
+            destination: {
+                name: 'Germany',
+                id: 'DEU',
+                code: 'DE',
+            },
+            year: 2020,
+            month: 5,
+            duration: 10,
+        },
+    });
+    await prisma.residencePeriod.createMany({
+        data: {
+            id: 'RESIDENCE1',
+            city: 'Nürnberg',
+            country: {
+                name: 'Germany',
+                id: 'DEU',
+                code: 'DE',
+            },
+            startYear: 2001,
+            startMonth: 8,
+            endMonth: 3,
+            endYear: 2021,
+        },
+    });
     await prisma.location.createMany({
         data: [
             {
