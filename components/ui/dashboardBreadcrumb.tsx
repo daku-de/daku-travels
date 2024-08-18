@@ -37,6 +37,10 @@ export function DashboardBreadcrumb() {
             { href: '/dashboard/edit', label: 'Edit' },
             { href: '/dashboard/edit/[id]', label: '[id]' },
         ],
+        '/dashboard/timeline': [
+            { href: '/dashboard', label: 'Dashboard' },
+            { href: '/dashboard/timeline', label: 'Timeline' },
+        ],
     };
 
     const getBreadcrumbs = async (path: string): Promise<BreadcrumbItemValue[]> => {
