@@ -1,18 +1,18 @@
 'use client';
 import { signInAction } from '@/actions/authentication';
 import { Button } from '@/components/ui/button';
-import { FaGithub } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
-export function SignInGitHub() {
+export function SignInGoogle() {
     return (
         <form
             action={async () => {
-                await signInAction('github');
+                await signInAction('google');
             }}
         >
             <Button size={'lg'} type="submit" className="gap-2">
-                <FaGithub className="text-xl" />
-                Login with GitHub
+                <FaGoogle className="text-xl" />
+                Login with Google
             </Button>
         </form>
     );
