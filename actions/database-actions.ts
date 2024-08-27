@@ -11,6 +11,7 @@ import {
     ResidencePeriodInput,
     LocationInput,
 } from '@/types/location';
+import { auth } from '@/auth';
 
 const prisma = new PrismaClient();
 
@@ -84,10 +85,18 @@ export async function loadLocations(): Promise<Location[]> {
 }
 
 export async function loadTravels(): Promise<Travel[]> {
-    return await prisma.travel.findMany({ include: { destination: true } });
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
+    return await prisma.travel.findMany({ where: { userId: session.user.id }, include: { destination: true } });
 }
 
 export async function addTravel(travel: TravelInput): Promise<Travel> {
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
     const existingCountry = await prisma.country.findUnique({
         where: { id: travel.destination.id },
     });
@@ -104,21 +113,34 @@ export async function addTravel(travel: TravelInput): Promise<Travel> {
             duration: travel.duration,
             icon: travel.icon,
             color: travel.color,
+            userId: session.user.id,
         },
         include: { destination: true },
     });
 }
 
 export async function deleteTravel(travel: Travel) {
-    await prisma.travel.delete({ where: { id: travel.id } });
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
+    await prisma.travel.delete({ where: { id: travel.id, userId: session.user.id } });
     return true;
 }
 
 export async function loadResidencePeriods(): Promise<ResidencePeriod[]> {
-    return await prisma.residencePeriod.findMany({ include: { country: true } });
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
+    return await prisma.residencePeriod.findMany({ where: { userId: session.user.id }, include: { country: true } });
 }
 
 export async function addResidencePeriod(residence: ResidencePeriodInput): Promise<ResidencePeriod> {
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
     const existingCountry = await prisma.country.findUnique({
         where: { id: residence.country.id },
     });
@@ -196,6 +218,7 @@ export async function addResidencePeriod(residence: ResidencePeriodInput): Promi
             startMonth: residence.startMonth,
             icon: residence.icon,
             color: residence.color,
+            userId: session.user.id,
             endYear,
             endMonth,
         },
@@ -204,6 +227,10 @@ export async function addResidencePeriod(residence: ResidencePeriodInput): Promi
 }
 
 export async function deleteResidencePeriod(residence: ResidencePeriod) {
-    await prisma.residencePeriod.delete({ where: { id: residence.id } });
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error('Unauthorized');
+    }
+    await prisma.residencePeriod.delete({ where: { id: residence.id, userId: session.user.id } });
     return true;
 }
