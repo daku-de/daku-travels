@@ -1,11 +1,29 @@
 'use server';
 
 import { Country } from '@/types/location';
-import fs from 'fs';
+import geojson from '@/public/resources/world-map-with-zoom-factor.json';
+
+interface GeoJSON {
+    type: string;
+    features: GeoJSONFeature[];
+}
+
+interface GeoJSONFeature {
+    type: string;
+    properties: {
+        label_x: number;
+        label_y: number;
+        zoom_factor: number;
+        name: string;
+        iso_a2_eh: string;
+        adm0_a3: string;
+        continent: string;
+    };
+}
 
 export async function loadCountries(): Promise<Country[]> {
-    const geojson = JSON.parse(fs.readFileSync('./public/resources/world-map-with-zoom-factor.json').toLocaleString());
-    const countries = geojson.features;
+    const geojsonData = geojson as GeoJSON;
+    const countries = geojsonData.features;
     const countryList: Country[] = countries.map(
         (feature: {
             properties: {
