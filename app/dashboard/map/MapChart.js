@@ -4,6 +4,7 @@ import { scaleLinear } from 'd3-scale';
 import { ComposableMap, Geographies, Geography, Sphere, Graticule, ZoomableGroup, Marker } from 'react-simple-maps';
 import Image from 'next/image';
 import { countryCodeEmoji } from 'country-code-emoji';
+import { loadCountries } from '@/actions/actions';
 
 const geoUrl = '/resources/world-map-countries.json';
 
@@ -23,19 +24,7 @@ const MapChart = () => {
 
     const fetchCountries = async () => {
         try {
-            const response = await fetch('/resources/countries.json');
-            if (!response.ok) {
-                throw new Error('Restcountries API response is not ok');
-            }
-            const countries = await response.json();
-
-            const countrylist = countries.map((country) => ({
-                name: country.name,
-                code: country.iso_a2_eh !== '-99' ? country.iso_a2_eh : country.adm0_a3,
-                id: country.adm0_a3,
-            }));
-
-            setCountryList(countrylist);
+            setCountryList(await loadCountries());
         } catch (error) {
             console.error('Error fetching country list:', error);
         }

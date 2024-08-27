@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FilePenLine, Home, LineChart, Package2, PanelLeft, TentTree } from 'lucide-react';
+import { FilePenLine, Home, LineChart, Package2, PanelLeft, TentTree, History } from 'lucide-react';
 
 import { DashboardBreadcrumb } from '@/components/ui/dashboardBreadcrumb';
 
@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Providers>
             <main className="flex min-h-screen w-full flex-col bg-muted/40" id="root">
                 <DesktopNav />
-                <div className="flex flex-col sm:gap-4 sm:pt-4 sm:pl-14 h-dvh">
+                <div className="flex flex-col sm:gap-4 sm:pt-4 sm:pl-14 h-dvh overflow-hidden">
                     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
                         <MobileNav />
                         <DashboardBreadcrumb />
@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         <ThemeSwitch className="text-muted-foreground hover:text-foreground flex sm:hidden" />
                         <User />
                     </header>
-                    <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40">
+                    <main className="grid flex-1 items-start gap-2 p-4 sm:px-6 sm:py-0 md:gap-4 bg-muted/40 overflow-hidden">
                         {children}
                     </main>
                 </div>
@@ -63,6 +63,10 @@ function DesktopNav() {
 
                 <NavItem href="/dashboard/edit" label="Edit Location">
                     <FilePenLine className="h-5 w-5" />
+                </NavItem>
+
+                <NavItem href="/dashboard/timeline" label="My Travels">
+                    <History className="h-5 w-5" />
                 </NavItem>
 
                 <NavItem href="/dashboard/analytics" label="Analytics">
@@ -124,6 +128,15 @@ function MobileNav() {
                         >
                             <FilePenLine className="h-5 w-5" />
                             Edit Location
+                        </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                        <Link
+                            href="/dashboard/timeline"
+                            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                        >
+                            <History className="h-5 w-5" />
+                            My Travels
                         </Link>
                     </SheetClose>
                     <SheetClose asChild>

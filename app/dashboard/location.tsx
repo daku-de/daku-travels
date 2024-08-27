@@ -31,7 +31,7 @@ export function LocationEntry({ location }: { location: Location }) {
                 <Status variant={location.status} className="min-[460px]:text-base text-[0.6rem]" />
             </TableCell>
             <TableCell className="hidden min-[900px]:table-cell">
-                {new Date(Number(location.id)).toLocaleDateString('en-US', {
+                {location.createdAt.toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric',

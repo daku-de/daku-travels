@@ -107,3 +107,49 @@ input[type='search']::-ms-clear {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+@-moz-document url-prefix() {
+    .firefox-will-change-transform {
+        will-change: transform;
+    }
+}
+
+@layer base {
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        -moz-appearance: textfield !important;
+    }
+}
+
+.triangle-right {
+    --r: 0.1rem;
+    height: 1.5rem;
+    width: 0.9rem;
+    aspect-ratio: 1/2;
+    -webkit-mask: linear-gradient(-90deg, #0000 calc(var(--r) / sqrt(2)), #000 0),
+        radial-gradient(var(--r) at calc(100% - var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%);
+    clip-path: polygon(100% 50%, 0 100%, 0 0);
+}
+
+.triangle-left {
+    --r: 0.1rem;
+    height: 1.5rem;
+    width: 0.9rem;
+    aspect-ratio: 1/2;
+    -webkit-mask: linear-gradient(90deg, #0000 calc(var(--r) / sqrt(2)), #000 0),
+        radial-gradient(var(--r) at calc(var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%);
+    clip-path: polygon(0 50%, 100% 100%, 100% 0);
+}
+
+.circular-gradient-progress {
+    --half-percentage: 50%;
+    --percentage: 100%;
+    background-image: conic-gradient(
+        rgb(175, 0, 175),
+        red var(--half-percentage),
+        rgb(175, 0, 175) var(--percentage),
+        transparent var(--percentage)
+    );
+}

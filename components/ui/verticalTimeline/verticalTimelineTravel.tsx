@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { Travel } from '@/types/location';
+import { iconMap, Travel } from '@/types/location';
 import { Clock, Plane, PlaneTakeoff } from 'lucide-react';
 import { VerticalTimelineItem } from './verticalTimelineItem';
 import DeleteTravelModal from '@/app/dashboard/modals/deleteModal/deleteTravelModal';
 import { useState } from 'react';
+import { FaBicycle, FaCarSide, FaPlane, FaShip, FaTrain, FaWalking } from 'react-icons/fa';
 
 interface VerticalTimelineItemProps extends React.HTMLAttributes<HTMLElement> {
     travel: Travel;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    onDelete: () => void;
 }
 
 function getMonthAbbreviation(monthNumber: number) {
@@ -20,7 +24,13 @@ function getDurationString(days: number) {
     return days + ' days';
 }
 
-const VerticalTimelineTravel = ({ className, travel }: VerticalTimelineItemProps) => {
+const VerticalTimelineTravel = ({
+    className,
+    travel,
+    onMouseEnter,
+    onMouseLeave,
+    onDelete,
+}: VerticalTimelineItemProps) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
@@ -49,14 +59,17 @@ const VerticalTimelineTravel = ({ className, travel }: VerticalTimelineItemProps
     return (
         <>
             <VerticalTimelineItem
-                Icon={Plane}
-                iconColor={'bg-tertiary'}
+                Icon={iconMap['travel'][travel.icon]}
+                iconColor={travel.color}
+                country={travel.destination}
                 location={travel.destination.name}
                 className={className}
                 info={date}
                 onDelete={openModal}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             />
-            <DeleteTravelModal travel={travel} isOpen={modalIsOpen} closeModal={closeModal} />
+            <DeleteTravelModal travel={travel} isOpen={modalIsOpen} closeModal={closeModal} onDelete={onDelete} />
         </>
     );
 };

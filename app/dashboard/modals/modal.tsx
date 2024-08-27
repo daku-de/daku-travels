@@ -37,7 +37,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, heade
             onRequestClose={onRequestClose}
             contentLabel="Custom Modal"
             style={customStyles}
-            className={'flex flex-col z-50 absolute bg-card border rounded-xl w-[480px] max-w-[85%]'}
+            className={'flex flex-col z-50 absolute bg-card border rounded-xl w-[480px] max-w-[85%] outline-none'}
         >
             <div className="w-full border-b border-foreground/30 flex justify-between items-center p-2 px-3">
                 <div className="font-semibold">{header}</div>

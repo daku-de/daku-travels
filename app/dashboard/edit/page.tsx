@@ -1,6 +1,4 @@
 'use client';
-import { loadLocations } from '@/actions/actions';
-import { auth } from '@/auth';
 import StatusDropDown from './statusDropdown';
 import CountryDropdown from './countryDropdown';
 
@@ -12,6 +10,7 @@ export default function EditPage() {
                 onCountryChange={(c) => {
                     console.log(c);
                 }}
+                error={false}
             />
         </div>
     );

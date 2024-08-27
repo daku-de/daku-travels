@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteTravel } from '@/actions/actions';
+import { deleteTravel } from '@/actions/database-actions';
 import { Travel } from '@/types/location';
 import DeleteModal from './deleteModal';
 
@@ -7,12 +7,13 @@ interface DeleteModalProps {
     isOpen: boolean;
     closeModal: () => void;
     travel: Travel;
+    onDelete: () => void;
 }
 
-const DeleteTravelModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, travel }) => {
-    const onDelete = () => {
+const DeleteTravelModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, travel, onDelete }) => {
+    const handleDelete = () => {
         deleteTravel(travel);
-        window.location.reload();
+        onDelete();
     };
 
     return (
@@ -22,7 +23,7 @@ const DeleteTravelModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, tra
                 closeModal={closeModal}
                 header={`Delete Travel "${travel.destination.name + ' ' + travel.year}"`}
                 type={'travel'}
-                deleteFunction={onDelete}
+                deleteFunction={handleDelete}
             ></DeleteModal>
         </React.Fragment>
     );

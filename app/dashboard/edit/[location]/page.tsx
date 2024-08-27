@@ -1,4 +1,4 @@
-import { loadLocations } from '@/actions/actions';
+import { loadLocations } from '@/actions/database-actions';
 import { redirect } from 'next/navigation';
 
 export default async function EditLocation({ params }: { params: { location: string } }) {

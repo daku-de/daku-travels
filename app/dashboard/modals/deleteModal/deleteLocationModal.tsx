@@ -1,5 +1,5 @@
 import React from 'react';
-import { deleteLocation } from '@/actions/actions';
+import { deleteLocation } from '@/actions/database-actions';
 import { Location } from '@/types/location';
 import Image from 'next/image';
 import { Status } from '@/components/ui/status';
@@ -43,7 +43,7 @@ const DeleteLocationModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, l
                         <Status variant={location.status} />
                         <div className="inline-flex items-center gap-1 text-gray-500 text-sm">
                             <Calendar className="w-4 h-4 flex-none" />
-                            {new Date(Number(location.id)).toLocaleDateString('en-US', {
+                            {location.createdAt.toLocaleDateString('en-US', {
                                 day: '2-digit',
                                 month: 'short',
                                 year: 'numeric',

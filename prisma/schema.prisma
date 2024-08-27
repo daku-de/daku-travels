@@ -7,8 +7,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Country {
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  continents  String[]
+  zoomFactor  Float
+  label_x     Float
+  label_y     Float
+  locations   Location[]
+  travels     Travel[]
+  residences  ResidencePeriod[]
+}
+
 model Location {
   id               String   @id @default(uuid())
+  createdAt        DateTime @default(now())
   status           String
   name             String
   shortDescription String
@@ -16,24 +30,66 @@ model Location {
   video            String
   image            String
   color            String
-  country          Json
+  countryId        String
+  country          Country  @relation(fields: [countryId], references: [id])
   activities       Json  
 }
 
 model Travel {
   id          String   @id @default(uuid())
-  destination Json
+  createdAt   DateTime @default(now())
+  countryId   String
+  destination Country  @relation(fields: [countryId], references: [id])
   year        Int
   month       Int
   duration    Int
+  color       String
+  icon        String
 }
 
 model ResidencePeriod {
   id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
   city        String
-  country     Json
+  countryId   String
+  country     Country  @relation(fields: [countryId], references: [id])
   startYear   Int
   startMonth  Int
   endYear     Int?
   endMonth    Int?
+  color       String
+  icon        String
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
 }

@@ -11,7 +11,7 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { loadLocations } from '@/actions/actions';
+import { loadLocations } from '@/actions/database-actions';
 
 interface BreadcrumbItemValue {
     href: string;

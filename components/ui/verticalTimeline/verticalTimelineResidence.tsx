@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResidencePeriod } from '@/types/location';
+import { iconMap, ResidencePeriod } from '@/types/location';
 import { PackageOpen } from 'lucide-react';
 import { VerticalTimelineItem } from './verticalTimelineItem';
 import { useState } from 'react';
@@ -8,6 +8,9 @@ import { FaHouse } from 'react-icons/fa6';
 
 interface VerticalTimelineItemProps extends React.HTMLAttributes<HTMLElement> {
     residencePeriod: ResidencePeriod;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    onDelete: () => void;
 }
 
 function getMonthAbbreviation(monthNumber: number) {
@@ -16,7 +19,13 @@ function getMonthAbbreviation(monthNumber: number) {
     return date.toLocaleString('en-US', { month: 'short' });
 }
 
-const VerticalTimelineResidence = ({ className, residencePeriod }: VerticalTimelineItemProps) => {
+const VerticalTimelineResidence = ({
+    className,
+    residencePeriod,
+    onMouseEnter,
+    onMouseLeave,
+    onDelete,
+}: VerticalTimelineItemProps) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
@@ -44,14 +53,22 @@ const VerticalTimelineResidence = ({ className, residencePeriod }: VerticalTimel
     return (
         <>
             <VerticalTimelineItem
-                Icon={FaHouse}
-                iconColor={'bg-orangey'}
+                Icon={iconMap['residence'][residencePeriod.icon]}
+                iconColor={residencePeriod.color}
+                country={residencePeriod.country}
                 location={residencePeriod.city + ', ' + residencePeriod.country.name}
                 className={className}
                 info={date}
                 onDelete={openModal}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             />
-            <DeleteResidenceModal residence={residencePeriod} isOpen={modalIsOpen} closeModal={closeModal} />
+            <DeleteResidenceModal
+                residence={residencePeriod}
+                isOpen={modalIsOpen}
+                closeModal={closeModal}
+                onDelete={onDelete}
+            />
         </>
     );
 };
