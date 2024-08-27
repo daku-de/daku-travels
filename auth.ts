@@ -53,7 +53,7 @@ function CustomPrismaAdapter(p: PrismaClient): Adapter {
             let user: AdapterUser | null = null;
             do {
                 try {
-                    user = await prisma.user.create({
+                    user = await p.user.create({
                         data: {
                             ...data,
                             name: uniqueName,
@@ -80,7 +80,43 @@ function CustomPrismaAdapter(p: PrismaClient): Adapter {
         },
         getUser: (id) => p.user.findUnique({ where: { id } }),
         getUserByEmail: (email) => p.user.findUnique({ where: { email } }),
-        updateUser: ({ id, ...data }) => p.user.update({ where: { id }, data }) as Promise<AdapterUser>,
+        updateUser: async ({ id, ...data }) => {
+            const baseName = slugify(data.name || 'user', {
+                lower: true,
+                strict: true,
+                replacement: '-',
+            });
+            let uniqueName = baseName;
+            let count = 0;
+            let user: AdapterUser | null = null;
+            do {
+                try {
+                    user = await p.user.update({
+                        where: { id },
+                        data: {
+                            ...data,
+                            name: uniqueName,
+                        },
+                    });
+                } catch (error) {
+                    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                        if (
+                            error.code === 'P2002' &&
+                            Array.isArray(error.meta?.target) &&
+                            error.meta?.target?.includes('name')
+                        ) {
+                            count++;
+                            uniqueName = `${baseName}${count}`;
+                        } else {
+                            throw error;
+                        }
+                    } else {
+                        throw error;
+                    }
+                }
+            } while (!user);
+            return user;
+        },
         linkAccount: (data) => {
             return p.account.create({ data }) as unknown as AdapterAccount;
         },
