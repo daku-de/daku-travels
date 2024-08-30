@@ -17,11 +17,12 @@ import { VerticalTimelineIcon } from '@/components/ui/verticalTimeline/verticalT
 interface DeleteModalProps {
     isOpen: boolean;
     closeModal: () => void;
+    country: Country | null;
 }
 
-const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal }) => {
+const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModal, country }) => {
     const [activeTab, setActiveTab] = useState<string>('travel');
-    const [country, setCountry] = useState<Country | null>(null);
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(country);
     const [color, setColor] = useState<string>('flag');
     const [icon, setIcon] = useState<string>('none');
     const [duration, setDuration] = useState<number>(5);
@@ -30,9 +31,13 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
     const [countryError, setCountryError] = useState<boolean>(false);
     const [monthError, setMonthError] = useState<boolean>(false);
 
+    useEffect(() => {
+        setSelectedCountry(country);
+    }, [country]);
+
     const onCreate = () => {
         let hasError = false;
-        if (!country) {
+        if (!selectedCountry) {
             hasError = true;
             setCountryError(true);
         }
@@ -43,7 +48,7 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
         if (hasError) return;
         if (activeTab === 'travel') {
             const travel: TravelInput = {
-                destination: country as Country,
+                destination: selectedCountry as Country,
                 year: year,
                 month: month as number,
                 duration: duration,
@@ -54,7 +59,7 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
         } else if (activeTab === 'residence') {
             const residence: ResidencePeriodInput = {
                 city: 'City',
-                country: country as Country,
+                country: selectedCountry as Country,
                 startYear: year,
                 startMonth: month as number,
                 color: color,
@@ -66,7 +71,7 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
     };
 
     const handleClose = () => {
-        setCountry(null);
+        setSelectedCountry(null);
         setCountryError(false);
         setMonth(null);
         setMonthError(false);
@@ -85,7 +90,7 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
     };
 
     const handleCountryChange = (c: Country) => {
-        setCountry(c);
+        setSelectedCountry(c);
         setCountryError(false);
     };
 
@@ -111,12 +116,16 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
                                     <CountryDropdown
                                         onCountryChange={handleCountryChange}
                                         error={countryError}
-                                        country={country}
+                                        country={selectedCountry}
                                     />
                                 </FormElement>
                                 <div className="flex flex-row gap-4">
                                     <FormElement title="Color">
-                                        <ColorDropdown country={country} onColorChange={setColor} color={color} />
+                                        <ColorDropdown
+                                            country={selectedCountry}
+                                            onColorChange={setColor}
+                                            color={color}
+                                        />
                                     </FormElement>
                                     <FormElement title="Icon">
                                         <IconDropdown color={color} onIconChange={setIcon} type={activeTab} />
@@ -139,12 +148,16 @@ const CreateTimelineItemModal: React.FC<DeleteModalProps> = ({ isOpen, closeModa
                                     <CountryDropdown
                                         onCountryChange={handleCountryChange}
                                         error={countryError}
-                                        country={country}
+                                        country={selectedCountry}
                                     />
                                 </FormElement>
                                 <div className="flex flex-row gap-4">
                                     <FormElement title="Color">
-                                        <ColorDropdown country={country} onColorChange={setColor} color={color} />
+                                        <ColorDropdown
+                                            country={selectedCountry}
+                                            onColorChange={setColor}
+                                            color={color}
+                                        />
                                     </FormElement>
                                     <FormElement title="Icon">
                                         <IconDropdown color={color} onIconChange={setIcon} type={activeTab} />

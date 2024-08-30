@@ -23,6 +23,7 @@ const MapChart = ({
     disableZoom = false,
     onMove = (coordinates, zoom) => {},
     region = { name: 'The World', geoJsonName: 'World' },
+    onClick = (country) => {},
 }) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [displayTooltip, setDisplayTooltip] = useState(false);
@@ -62,7 +63,16 @@ const MapChart = ({
     };
 
     const handleCountryClick = (geo) => {
-        console.log(geo.properties);
+        const country = {
+            name: geo.properties.name,
+            code: geo.properties.iso_a2_eh !== '-99' ? geo.properties.iso_a2_eh : geo.properties.adm0_a3,
+            id: geo.properties.adm0_a3,
+            continents: geo.properties.continent.split(', '),
+            zoomFactor: geo.properties.zoom_factor,
+            label_x: geo.properties.label_x,
+            label_y: geo.properties.label_y,
+        };
+        onClick(country);
     };
 
     return (

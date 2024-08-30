@@ -13,13 +13,13 @@ interface VerticalTimelineItemProps extends React.HTMLAttributes<HTMLElement> {
     onDelete: () => void;
 }
 
-function getMonthAbbreviation(monthNumber: number) {
+export function getMonthAbbreviation(monthNumber: number) {
     const date = new Date();
     date.setMonth(monthNumber - 1);
     return date.toLocaleString('en-US', { month: 'short' });
 }
 
-function getDurationString(days: number) {
+export function getDurationString(days: number) {
     if (days === 1) return days + ' day';
     return days + ' days';
 }

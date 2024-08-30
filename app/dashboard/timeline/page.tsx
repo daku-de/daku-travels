@@ -139,6 +139,7 @@ export default function TImelinePage() {
     const [allCountries, setAllCountries] = useState<Country[]>([]);
 
     const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
     const [highlightedCountries, setHighlightedCountries] = useState<Country[]>([]);
 
@@ -186,6 +187,11 @@ export default function TImelinePage() {
     const updatePreviousPosition = (coordinates: [number, number], zoom: number) => {
         setPreviousMapZoom(zoom);
         setPreviousMapCenter(coordinates);
+    };
+
+    const handleCountryClick = (country: Country) => {
+        setSelectedCountry(country);
+        setCreateModalOpen(true);
     };
 
     return (
@@ -239,7 +245,7 @@ export default function TImelinePage() {
                         countryList={highlightedCountries}
                         highlightColor="purple"
                         generateTooltip={(country: Country) => {
-                            return <div>{country.name}</div>;
+                            return <div className="p-3 rounded-lg bg-black">{country.name}</div>;
                         }}
                         showTooltip={true}
                         className="w-full max-h-[350px] flex-shrink-0"
@@ -248,6 +254,7 @@ export default function TImelinePage() {
                         disableZoom={false}
                         onMove={updatePreviousPosition}
                         region={selectedRegion}
+                        onClick={handleCountryClick}
                     />
 
                     <Tabs
@@ -311,7 +318,11 @@ export default function TImelinePage() {
                         <TabsContent value="achievements"></TabsContent>
                     </Tabs>
                 </div>
-                <CreateTimelineItemModal isOpen={createModalOpen} closeModal={handleModalClose} />
+                <CreateTimelineItemModal
+                    isOpen={createModalOpen}
+                    closeModal={handleModalClose}
+                    country={selectedCountry}
+                />
             </div>
             <div className="w-[2px] mx-2 bg-primary/20 max-h-fit flex-none rounded-full max-lg:hidden"></div>
             <div className="w-1/2 overflow-hidden max-lg:hidden flex items-center flex-col gap-8">
@@ -329,6 +340,7 @@ export default function TImelinePage() {
                         disableZoom={false}
                         onMove={updatePreviousPosition}
                         region={selectedRegion}
+                        onClick={handleCountryClick}
                     />
                     <div className="text-xs text-primary/40">Click on a country to add a trip.</div>
                 </div>
