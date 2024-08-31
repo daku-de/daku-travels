@@ -4,7 +4,7 @@ import DashboardHome from './dashboard-home';
 export default async function Dashboard() {
     const session = await auth();
     if (session?.user?.name !== process.env.ADMIN_USER) {
-        return <div>NOT ADMIN USER!</div>;
+        return <div>Placeholder</div>;
     }
 
     return <DashboardHome />;
